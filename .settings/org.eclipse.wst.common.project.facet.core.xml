@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faceted-project>
   <runtime name="zulu19.32.13-ca-jdk19.0.2-win_x64"/>
-  <installed facet="java" version="18"/>
   <installed facet="jpt.jpa" version="2.2"/>
+  <installed facet="java" version="18"/>
 </faceted-project>
