@@ -1,5 +1,7 @@
 package Hibernate;
 
+import java.util.List;
+
 import org.junit.Test;
 
 import DAO.DAOGeneric;
@@ -61,5 +63,42 @@ public class teste {
         } catch(Exception e) {
             // Ignora o erro e não faz nada
         }
+	}
+	
+	@Test
+	public void testeUpdate() {
+		try {
+			DAOGeneric<UsuarioPessoa> daoGeneric = new DAOGeneric<UsuarioPessoa>();
+
+			UsuarioPessoa pessoa = daoGeneric.pesquisar(10L, UsuarioPessoa.class);
+			
+			pessoa.setIdade(99);
+			pessoa.setNome("Nome atualizado 2");
+			
+			daoGeneric.atualizar(pessoa);
+			
+        } catch(Exception e) {
+            // Ignora o erro e não faz nada
+        }
+	}
+	
+	@Test
+	public void testeDelete() {
+		DAOGeneric<UsuarioPessoa> daoGeneric = new DAOGeneric<UsuarioPessoa>();
+		
+		UsuarioPessoa pessoa = daoGeneric.pesquisar(2L, UsuarioPessoa.class);
+		
+		daoGeneric.deletar(pessoa);
+	}
+	
+	@Test
+	public void testeConsultar() {
+		DAOGeneric<UsuarioPessoa> daoGeneric = new DAOGeneric<UsuarioPessoa>();
+		
+		List<UsuarioPessoa> List  = daoGeneric.listar(UsuarioPessoa.class);
+		
+		for(UsuarioPessoa usuarioPessoa : List) {
+			System.out.println(usuarioPessoa);
+		}
 	}
 }

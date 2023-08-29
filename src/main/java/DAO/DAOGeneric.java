@@ -1,5 +1,7 @@
 package DAO;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
@@ -15,9 +17,17 @@ public class DAOGeneric<E> {
 		transaction.commit();
 	}
 	
+	public E atualizar(E entidade) {
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		E entidadeAtualizada = entityManager.merge(entidade);
+		transaction.commit();
+		
+		return entidadeAtualizada;
+	}
+	
 	public E pesquisar(E entidade) {
 		Object id = HibernateUtil.getPrimaryKey(entidade);
-		
 		E e = (E) entityManager.find(entidade.getClass(), id);
 		
 		return e;	
@@ -30,5 +40,25 @@ public class DAOGeneric<E> {
 		return e;	
 	}
 	
+	public void deletar(E entidade) {
+		Object id = HibernateUtil.getPrimaryKey(entidade);
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		
+		entityManager.createNativeQuery("DELETE FROM " + entidade.getClass().getSimpleName().toLowerCase() +
+				" WHERE id = " + id).executeUpdate();
+		
+		transaction.commit();
+	}
 	
+	public List<E> listar(Class<E> entidade){
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		
+		List<E> lista = entityManager.createQuery("FROM " + entidade.getName()).getResultList();
+
+		transaction.commit();
+		
+		return lista;
+	}	 
 }
