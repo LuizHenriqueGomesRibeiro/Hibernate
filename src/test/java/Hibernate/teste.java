@@ -12,14 +12,8 @@ public class teste {
 	@Test
 	public void testeHibernate() {
 		DAOGeneric<UsuarioPessoa> daoGeneric = new DAOGeneric<UsuarioPessoa>();
-		//DAOGeneric<TEST> Test = new DAOGeneric<TEST>();
 		UsuarioPessoa pessoa = new UsuarioPessoa();
-		//TEST test = new TEST();
-	
-		//test.setNome("ui papai");
-		//test.setTest("teste");
-		
-		//Test.salvar(test);
+
 		try {
 			pessoa.setIdade(22);
 			pessoa.setLogin("Bruna");
@@ -98,6 +92,71 @@ public class teste {
 		List<UsuarioPessoa> List  = daoGeneric.listar(UsuarioPessoa.class);
 		
 		for(UsuarioPessoa usuarioPessoa : List) {
+			System.out.println(usuarioPessoa);
+		}
+	}
+	
+	@Test
+	public void testQueryList() {
+		DAOGeneric<UsuarioPessoa> daoGeneric = new DAOGeneric<UsuarioPessoa>();
+		@SuppressWarnings("unchecked")
+		List<UsuarioPessoa> List  = daoGeneric.getEntityManager().createQuery(" FROM UsuarioPessoa ORDER BY id").setMaxResults(4).
+				getResultList();
+		
+		for (UsuarioPessoa usuarioPessoa : List) {
+			System.out.println("----------------------------------------------------------------------------------------------------------"
+					+ "-----------------------------");
+			System.out.println(usuarioPessoa);
+		}
+	}
+	
+	@Test
+	public void testQueryListParameter() {
+		DAOGeneric<UsuarioPessoa> daoGeneric = new DAOGeneric<UsuarioPessoa>();
+		@SuppressWarnings("unchecked")
+		List<UsuarioPessoa> List  = daoGeneric.getEntityManager().createQuery(" FROM UsuarioPessoa WHERE nome = :nome"
+				+ " OR sobrenome = :sobrenome").
+				setParameter("nome", "Luiz").
+				setParameter("sobrenome", "Gomes").
+				getResultList();
+		
+		for (UsuarioPessoa usuarioPessoa : List) {
+			System.out.println("----------------------------------------------------------------------------------------------------------"
+					+ "-----------------------------");
+			System.out.println(usuarioPessoa);
+		}
+	}
+	
+	@Test
+	public void testeSoma() {
+		DAOGeneric<UsuarioPessoa> daoGeneric = new DAOGeneric<UsuarioPessoa>();
+		
+		Long somaIdade = (Long) daoGeneric.getEntityManager().createQuery("SELECT SUM(u.idade) FROM UsuarioPessoa u").getSingleResult();
+		System.out.println(somaIdade);
+	}
+	
+	@Test
+	public void testeNameQuery1() {
+		DAOGeneric<UsuarioPessoa> daoGeneric = new DAOGeneric<UsuarioPessoa>();
+		@SuppressWarnings("unchecked")
+		List<UsuarioPessoa> List = daoGeneric.getEntityManager().createNamedQuery("UsuarioPessoa.todos").getResultList();
+		for (UsuarioPessoa usuarioPessoa : List) {
+			System.out.println("----------------------------------------------------------------------------------------------------------"
+					+ "-----------------------------");
+			System.out.println(usuarioPessoa);
+		}
+	}
+	
+	@Test
+	public void testeNameQuery2() {
+		DAOGeneric<UsuarioPessoa> daoGeneric = new DAOGeneric<UsuarioPessoa>();
+		@SuppressWarnings("unchecked")
+		List<UsuarioPessoa> List = daoGeneric.getEntityManager().createNamedQuery("UsuarioPessoa.buscarNome").
+		setParameter("nome", "Luiz").
+		getResultList();
+		for (UsuarioPessoa usuarioPessoa : List) {
+			System.out.println("----------------------------------------------------------------------------------------------------------"
+					+ "-----------------------------");
 			System.out.println(usuarioPessoa);
 		}
 	}

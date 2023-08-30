@@ -17,13 +17,11 @@ public class DAOGeneric<E> {
 		transaction.commit();
 	}
 	
-	public E atualizar(E entidade) {
+	public void atualizar(E entidade) {
 		EntityTransaction transaction = entityManager.getTransaction();
 		transaction.begin();
-		E entidadeAtualizada = entityManager.merge(entidade);
+		entityManager.merge(entidade);
 		transaction.commit();
-		
-		return entidadeAtualizada;
 	}
 	
 	public E pesquisar(E entidade) {
@@ -60,5 +58,13 @@ public class DAOGeneric<E> {
 		transaction.commit();
 		
 		return lista;
+	}
+
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
+
+	public void setEntityManager(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}	 
 }
